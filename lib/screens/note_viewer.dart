@@ -44,10 +44,10 @@ class NoteViewer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    _NoteButton('Previous', Colors.amber, _previousNote),
-                    _NoteButton('Edit', Colors.grey, _editNote),
-                    _NoteButton('New', Colors.green, _editNote),
-                    _NoteButton('Next', Colors.amber, _nextNote),
+                    NoteButton('Previous', Colors.amber, _previousNote),
+                    NoteButton('Edit', Colors.grey, _editNote),
+                    NoteButton('New', Colors.green, _editNote),
+                    NoteButton('Next', Colors.amber, _nextNote),
                   ],
                 ),
               ),
@@ -63,12 +63,12 @@ class NoteViewer extends StatelessWidget {
   void _editNote() {}
 }
 
-class _NoteButton extends StatelessWidget {
+class NoteButton extends StatelessWidget {
   final String _text;
   final Color _color;
   final Function _onPressed;
 
-  _NoteButton(this._text, this._color, this._onPressed);
+  NoteButton(this._text, this._color, this._onPressed);
 
   @override
   Widget build(BuildContext context) {

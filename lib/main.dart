@@ -1,5 +1,8 @@
-import 'package:designs/screens/note_viewer.dart';
+import 'screens/note_editor.dart';
+import 'screens/note_viewer.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/note_adder.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: NoteViewer(),
+      home: //NoteEditor(),
+       NoteViewer(),
+      //NoteAdder(),
     );
   }
 }
