@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: //NoteEditor(),
-       NoteViewer(),
-      //NoteAdder(),
+      home: NoteViewer(),
     );
   }
 }

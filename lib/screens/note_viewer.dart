@@ -1,26 +1,21 @@
+import 'package:designs/providers/note_provider.dart';
+
 import 'note_adder.dart';
 import 'note_editor.dart';
 import 'package:flutter/material.dart';
-List dummyNotes = [
-  {
-    'title': 'title 1',
-    'text': 'text 1'
-  },
-  {
-    'title': 'title 2',
-    'text': 'text 2'
-  },
-  {
-    'title': 'title 3',
-    'text': 'text 3'
-  }
-  ];
+
+  List dummyNotes = [];
+
+// TODO get note of type list, snapshot ??
+  Future<List<Map<String,dynamic >>> notesList= NoteProvider.getNoteList();
+
 class NoteViewer extends StatefulWidget {
   @override
   _NoteViewerState createState() => _NoteViewerState();
 }
 
 class _NoteViewerState extends State<NoteViewer> {
+
   int _index= 0;
   void _incrementIndex() {
     setState( () {_index= (_index+1) % dummyNotes.length;} );
@@ -47,7 +42,7 @@ class _NoteViewerState extends State<NoteViewer> {
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          dummyNotes[_index]['title'],
+                          dummyNotes.length > 0 ? dummyNotes[_index]['title'] : 'Create a New note',
                           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -55,7 +50,7 @@ class _NoteViewerState extends State<NoteViewer> {
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        dummyNotes[_index]['text'] ,
+                       dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
                         style: TextStyle(
                           fontSize: 24,
                         ),
