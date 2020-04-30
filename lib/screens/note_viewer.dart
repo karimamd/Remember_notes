@@ -30,7 +30,6 @@ class _NoteViewerState extends State<NoteViewer> {
   }
   @override
   Widget build(BuildContext context) {
-    final String _notetext ='This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will look';
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
@@ -38,28 +37,34 @@ class _NoteViewerState extends State<NoteViewer> {
         body:
         Stack(
           children: <Widget>[
-            ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      dummyNotes[_index]['title'],
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width*0.95,
+                //color: Colors.brown,
+                child: ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          dummyNotes[_index]['title'],
+                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    dummyNotes[_index]['text'] +'\n\n'+ _notetext,
-                    style: TextStyle(
-                      fontSize: 24,
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        dummyNotes[_index]['text'] ,
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: MediaQuery.of(context).size.height*0.2,),
+                  ],
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.2,),
-              ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

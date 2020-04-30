@@ -22,13 +22,14 @@ class _NoteEditorState extends State<NoteEditor> {
       ),
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width*0.8,
+          width: MediaQuery.of(context).size.width*0.85,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // maybe change TextFields to TextFormFields
               TextField(
+                maxLines: 2,
                 controller: _titleController,
                 decoration: InputDecoration(
                   hintText: 'Title',
@@ -36,11 +37,21 @@ class _NoteEditorState extends State<NoteEditor> {
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-              TextField(
-                controller: _textController,
-                decoration: InputDecoration(
-                  hintText: 'Note text',
-                  border: OutlineInputBorder()
+              Scrollbar(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  reverse: true,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height*0.55,
+                    child: TextField(
+                      maxLines: 200,
+                      controller: _textController,
+                      decoration: InputDecoration(
+                        hintText: 'Note text',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.05),
