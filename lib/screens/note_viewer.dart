@@ -1,3 +1,5 @@
+import 'package:designs/screens/note_adder.dart';
+import 'package:designs/screens/note_editor.dart';
 import 'package:flutter/material.dart';
 
 class NoteViewer extends StatelessWidget {
@@ -6,7 +8,6 @@ class NoteViewer extends StatelessWidget {
     final String _notetext =
         'This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will look';
     return Scaffold(
-        drawer: Drawer(),
         appBar: AppBar(
           title: Text('Note Viewer'),
         ),
@@ -44,10 +45,10 @@ class NoteViewer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    NoteButton('Previous', Colors.amber, _previousNote),
-                    NoteButton('Edit', Colors.grey, _editNote),
-                    NoteButton('New', Colors.green, _editNote),
-                    NoteButton('Next', Colors.amber, _nextNote),
+                    NoteButton('Previous', Colors.amber, (){_previousNote(context);}),
+                    NoteButton('Edit', Colors.grey, (){_editNote(context);}),
+                    NoteButton('New', Colors.green, (){_newNote(context);}),
+                    NoteButton('Next', Colors.amber, (){_nextNote(context);}),
                   ],
                 ),
               ),
@@ -56,11 +57,22 @@ class NoteViewer extends StatelessWidget {
         ));
   }
   //TODO implement those methods
-  void _nextNote() {}
+void  _previousNote(context){}
+void  _nextNote(context){}
+//  Future _editNote(context) async {
+//    //TODO Load prevous note from database or cache
+//  }
+//
+//  Future _nextNote(context) async {
+//    //TODO Load next note from database
+//  }
+  Future _editNote(context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditor()));
+  }
 
-  void _previousNote() {}
-
-  void _editNote() {}
+  Future _newNote(context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NoteAdder()));
+  }
 }
 
 class NoteButton extends StatelessWidget {

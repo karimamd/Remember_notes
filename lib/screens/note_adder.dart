@@ -12,7 +12,7 @@ class _NoteAdderState extends State<NoteAdder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Note'),
+        title: Text('Add new Note'),
       ),
       body: Center(
         child: Container(
@@ -39,8 +39,8 @@ class _NoteAdderState extends State<NoteAdder> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  NoteButton('Save', Colors.amber, (){}),
-                  NoteButton('Discard', Colors.grey, (){}),
+                  NoteButton('Save', Colors.amber, (){_saveNote(context);}),
+                  NoteButton('Discard', Colors.grey, (){_discardNote(context);}),
                 ],
               ),
             ],
@@ -49,5 +49,11 @@ class _NoteAdderState extends State<NoteAdder> {
       ),
 
     );
+  }
+  Future _saveNote(context) async {
+    Navigator.pop(context);
+  }
+  Future _discardNote(context) async {
+    Navigator.pop(context);
   }
 }

@@ -39,9 +39,9 @@ class _NoteEditorState extends State<NoteEditor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  NoteButton('Save', Colors.amber, (){}),
-                  NoteButton('Discard', Colors.grey, (){}),
-                  NoteButton('Delete', Colors.red, (){}),
+                  NoteButton('Save', Colors.amber, (){_saveNote(context);} ),
+                  NoteButton('Discard', Colors.grey, (){_discardNote(context);} ),
+                  NoteButton('Delete', Colors.red, (){_deleteNote(context);} ),
                 ],
               ),
             ],
@@ -50,5 +50,14 @@ class _NoteEditorState extends State<NoteEditor> {
       ),
 
     );
+  }
+  Future _saveNote(context) async {
+    Navigator.pop(context);
+  }
+  Future _discardNote(context) async {
+    Navigator.pop(context);
+  }
+  Future _deleteNote(context) async {
+    Navigator.pop(context);
   }
 }
