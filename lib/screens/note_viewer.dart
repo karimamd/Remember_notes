@@ -1,12 +1,36 @@
 import 'package:designs/screens/note_adder.dart';
 import 'package:designs/screens/note_editor.dart';
 import 'package:flutter/material.dart';
+List dummy_notes = [
+  {
+    'title': 'title 1',
+    'text': 'text 1'
+  },
+  {
+    'title': 'title 2',
+    'text': 'text 2'
+  },
+  {
+    'title': 'title 3',
+    'text': 'text 3'
+  }
+  ];
+class NoteViewer extends StatefulWidget {
+  @override
+  _NoteViewerState createState() => _NoteViewerState();
+}
 
-class NoteViewer extends StatelessWidget {
+class _NoteViewerState extends State<NoteViewer> {
+  int _index= 0;
+  void _incrementIndex() {
+    setState( () {_index= (_index+1) % dummy_notes.length;} );
+  }
+  void _decrementIndex() {
+    setState( () {_index= _index==0 ? dummy_notes.length-1 : (_index-1);} );
+  }
   @override
   Widget build(BuildContext context) {
-    final String _notetext =
-        'This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will look';
+    final String _notetext ='This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text This is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will lookThis is an intentionally large text to see how the note will look';
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
@@ -20,7 +44,7 @@ class NoteViewer extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      'Title Placeholder',
+                      dummy_notes[_index]['title'],
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -28,7 +52,7 @@ class NoteViewer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    _notetext,
+                    dummy_notes[_index]['text'] +'\n\n'+ _notetext,
                     style: TextStyle(
                       fontSize: 24,
                     ),
@@ -56,16 +80,16 @@ class NoteViewer extends StatelessWidget {
           ],
         ));
   }
-  //TODO implement those methods
-void  _previousNote(context){}
-void  _nextNote(context){}
-//  Future _editNote(context) async {
-//    //TODO Load prevous note from database or cache
-//  }
-//
-//  Future _nextNote(context) async {
-//    //TODO Load next note from database
-//  }
+
+
+
+  Future _previousNote(context) async {
+    _decrementIndex();
+  }
+  Future _nextNote(context) async {
+    _incrementIndex();
+  }
+
   Future _editNote(context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditor()));
   }
