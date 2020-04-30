@@ -6,8 +6,8 @@ class NoteAdder extends StatefulWidget {
 }
 
 class _NoteAdderState extends State<NoteAdder> {
-  int _index = 0; // Make sure this is outside build(), otherwise every setState will change the value back to 0
-
+  TextEditingController _titleController= TextEditingController();
+  TextEditingController _textController= TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +23,7 @@ class _NoteAdderState extends State<NoteAdder> {
             children: <Widget>[
               // maybe change TextFields to TextFormFields
               TextField(
+                controller: _titleController,
                 decoration: InputDecoration(
                     hintText: 'Title',
                     border: OutlineInputBorder()
@@ -30,6 +31,7 @@ class _NoteAdderState extends State<NoteAdder> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               TextField(
+                controller: _textController,
                 decoration: InputDecoration(
                     hintText: 'Note text',
                     border: OutlineInputBorder()
@@ -39,7 +41,11 @@ class _NoteAdderState extends State<NoteAdder> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  NoteButton('Save', Colors.amber, (){_saveNote(context);}),
+                  NoteButton(
+                      'Save',
+                      Colors.amber,
+                      (){_addNote(context,_titleController.text, _textController.text);}
+                      ),
                   NoteButton('Discard', Colors.grey, (){_discardNote(context);}),
                 ],
               ),
@@ -50,7 +56,9 @@ class _NoteAdderState extends State<NoteAdder> {
 
     );
   }
-  Future _saveNote(context) async {
+  Future _addNote(context, noteTitle, noteText) async {
+    Map note= {'title': noteTitle , 'text': noteText};
+    dummyNotes.insert(0,note);
     Navigator.pop(context);
   }
   Future _discardNote(context) async {

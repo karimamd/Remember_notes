@@ -1,7 +1,7 @@
-import 'package:designs/screens/note_adder.dart';
-import 'package:designs/screens/note_editor.dart';
+import 'note_adder.dart';
+import 'note_editor.dart';
 import 'package:flutter/material.dart';
-List dummy_notes = [
+List dummyNotes = [
   {
     'title': 'title 1',
     'text': 'text 1'
@@ -23,10 +23,10 @@ class NoteViewer extends StatefulWidget {
 class _NoteViewerState extends State<NoteViewer> {
   int _index= 0;
   void _incrementIndex() {
-    setState( () {_index= (_index+1) % dummy_notes.length;} );
+    setState( () {_index= (_index+1) % dummyNotes.length;} );
   }
   void _decrementIndex() {
-    setState( () {_index= _index==0 ? dummy_notes.length-1 : (_index-1);} );
+    setState( () {_index= _index==0 ? dummyNotes.length-1 : (_index-1);} );
   }
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _NoteViewerState extends State<NoteViewer> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      dummy_notes[_index]['title'],
+                      dummyNotes[_index]['title'],
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -52,7 +52,7 @@ class _NoteViewerState extends State<NoteViewer> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    dummy_notes[_index]['text'] +'\n\n'+ _notetext,
+                    dummyNotes[_index]['text'] +'\n\n'+ _notetext,
                     style: TextStyle(
                       fontSize: 24,
                     ),
@@ -70,7 +70,7 @@ class _NoteViewerState extends State<NoteViewer> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     NoteButton('Previous', Colors.amber, (){_previousNote(context);}),
-                    NoteButton('Edit', Colors.grey, (){_editNote(context);}),
+                    NoteButton('Edit', Colors.grey, (){_editNote(context, _index);}),
                     NoteButton('New', Colors.green, (){_newNote(context);}),
                     NoteButton('Next', Colors.amber, (){_nextNote(context);}),
                   ],
@@ -90,8 +90,8 @@ class _NoteViewerState extends State<NoteViewer> {
     _incrementIndex();
   }
 
-  Future _editNote(context) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditor()));
+  Future _editNote(context, passedIndex) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditor(_index)));
   }
 
   Future _newNote(context) async {
