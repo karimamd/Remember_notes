@@ -1,3 +1,4 @@
+import 'package:designs/providers/note_provider.dart';
 import 'package:flutter/material.dart';
 import 'note_viewer.dart';
 class NoteEditor extends StatefulWidget {
@@ -72,14 +73,17 @@ class _NoteEditorState extends State<NoteEditor> {
   }
   Future _updateNote(context, index) async {
     Map note= {'title': _titleController.text , 'text': _textController.text};
-    dummyNotes.removeAt(index);
-    dummyNotes.insert(index, note);
+    await NoteProvider.updateNoteByTitle(dummyNotes[index]['title'],{'title': _titleController.text, 'text': _textController.text});
+    //dummyNotes.removeAt(index);
+    //dummyNotes.insert(index, note);
+    dummyNotes[index]=note;
     Navigator.pop(context);
   }
   Future _discardNote(context) async {
     Navigator.pop(context);
   }
   Future _deleteNote(context, index) async {
+    await NoteProvider.deleteNoteByTitle(dummyNotes[index]['title']);
     dummyNotes.removeAt(index);
     Navigator.pop(context);
   }

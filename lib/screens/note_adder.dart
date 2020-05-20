@@ -1,3 +1,4 @@
+import 'package:designs/providers/note_provider.dart';
 import 'package:flutter/material.dart';
 import 'note_viewer.dart';
 class NoteAdder extends StatefulWidget {
@@ -62,8 +63,10 @@ class _NoteAdderState extends State<NoteAdder> {
     );
   }
   Future _addNote(context, noteTitle, noteText) async {
+    //int maxId= await NoteProvider.db.rawQuery('SELECT * FROM "table"');
     Map note= {'title': noteTitle , 'text': noteText};
-    dummyNotes.insert(0,note);
+    await NoteProvider.insertNote({'title': noteTitle, 'text': noteText});
+    dummyNotes.insert(dummyNotes.length,note);
     Navigator.pop(context);
   }
   Future _discardNote(context) async {

@@ -4,10 +4,8 @@ import 'note_adder.dart';
 import 'note_editor.dart';
 import 'package:flutter/material.dart';
 
-  List dummyNotes = [];
-
-// TODO get note of type list, snapshot ??
-  Future<List<Map<String,dynamic >>> notesList= NoteProvider.getNoteList();
+// list of note objects from now on
+List dummyNotes =  [];
 
 class NoteViewer extends StatefulWidget {
   @override
@@ -17,14 +15,18 @@ class NoteViewer extends StatefulWidget {
 class _NoteViewerState extends State<NoteViewer> {
 
   int _index= 0;
-  void _incrementIndex() {
+  int noteId=1;
+  void _incrementIndex() async {
     setState( () {_index= (_index+1) % dummyNotes.length;} );
   }
   void _decrementIndex() {
     setState( () {_index= _index==0 ? dummyNotes.length-1 : (_index-1);} );
   }
+
+
   @override
   Widget build(BuildContext context) {
+    _index= _index ==dummyNotes.length? 0:_index;
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
@@ -38,7 +40,7 @@ class _NoteViewerState extends State<NoteViewer> {
                 //color: Colors.brown,
                 child: ListView(
                   children: <Widget>[
-                    Padding(
+                    Padding( //title pane
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
@@ -47,7 +49,7 @@ class _NoteViewerState extends State<NoteViewer> {
                         ),
                       ),
                     ),
-                    Padding(
+                    Padding( //Note text box
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
                        dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
@@ -56,12 +58,12 @@ class _NoteViewerState extends State<NoteViewer> {
                         ),
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.2,),
+                    SizedBox(height: MediaQuery.of(context).size.height*0.2,), // extra space when scrolling
                   ],
                 ),
               ),
             ),
-            Padding(
+            Padding( // buttons row
               padding: const EdgeInsets.all(10.0),
               child: Align(
                 //alignment: FractionalOffset.bottomCenter,
@@ -69,16 +71,22 @@ class _NoteViewerState extends State<NoteViewer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    NoteButton('Previous', Colors.amber, (){_previousNote(context);}),
-                    NoteButton('Edit', Colors.grey, (){_editNote(context, _index);}),
+                    NoteButton('Previous', Colors.amber, (){if(dummyNotes.length>0)_previousNote(context);}),
+                    NoteButton(dummyNotes.length > 0?'Edit':'Load', Colors.grey, (){
+                      if(dummyNotes.length>0)
+                        _editNote(context, _index);
+                      else
+                        _loadDB();
+                    }),
                     NoteButton('New', Colors.green, (){_newNote(context);}),
-                    NoteButton('Next', Colors.amber, (){_nextNote(context);}),
+                    NoteButton('Next', Colors.amber, (){if(dummyNotes.length>0)_nextNote(context);}),
                   ],
                 ),
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
 
@@ -89,13 +97,21 @@ class _NoteViewerState extends State<NoteViewer> {
   Future _nextNote(context) async {
     _incrementIndex();
   }
+  void _loadDB() async{
+    dummyNotes.addAll( await NoteProvider.getNoteList());
+    setState((){});
+  }
 
   Future _editNote(context, passedIndex) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditor(_index)));
   }
 
   Future _newNote(context) async {
+    if(dummyNotes.length==0)
+      _loadDB();
     Navigator.push(context, MaterialPageRoute(builder: (context) => NoteAdder()));
+
+
   }
 }
 
