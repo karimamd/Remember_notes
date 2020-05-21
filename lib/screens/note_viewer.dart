@@ -16,6 +16,7 @@ class _NoteViewerState extends State<NoteViewer> {
 
   int _index= 0;
   int noteId=1;
+  int gestureSensitivity = 20;
   void _incrementIndex() async {
     setState( () {_index= (_index+1) % dummyNotes.length;} );
   }
@@ -34,32 +35,44 @@ class _NoteViewerState extends State<NoteViewer> {
         body:
         Stack(
           children: <Widget>[
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width*0.95,
-                //color: Colors.brown,
-                child: ListView(
-                  children: <Widget>[
-                    Padding( //title pane
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
+            GestureDetector(
+              onHorizontalDragUpdate: (details) {
+                  if (details.delta.dx > gestureSensitivity) {
+                  // Right Swipe
+                    _nextNote(context);
+                  } else if(details.delta.dx < -gestureSensitivity){
+                  //Left Swipe
+                    _previousNote(context);
+                  }
+              },
+              onDoubleTap: (){ _editNote(context, _index); },
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.95,
+                  //color: Colors.brown,
+                  child: ListView(
+                    children: <Widget>[
+                      Padding( //title pane
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            dummyNotes.length > 0 ? dummyNotes[_index]['title'] : 'Create a New note',
+                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Padding( //Note text box
+                        padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          dummyNotes.length > 0 ? dummyNotes[_index]['title'] : 'Create a New note',
-                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                         dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding( //Note text box
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                       dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
-                        style: TextStyle(
-                          fontSize: 24,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.2,), // extra space when scrolling
-                  ],
+                      SizedBox(height: MediaQuery.of(context).size.height*0.2,), // extra space when scrolling
+                    ],
+                  ),
                 ),
               ),
             ),
