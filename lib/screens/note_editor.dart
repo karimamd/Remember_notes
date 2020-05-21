@@ -24,9 +24,9 @@ class _NoteEditorState extends State<NoteEditor> {
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width*0.85,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+//            crossAxisAlignment: CrossAxisAlignment.center,
+//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // maybe change TextFields to TextFormFields
               TextField(
@@ -43,7 +43,7 @@ class _NoteEditorState extends State<NoteEditor> {
                   scrollDirection: Axis.vertical,
                   reverse: true,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height*0.55,
+                    height: MediaQuery.of(context).size.height*0.45,
                     child: TextField(
                       maxLines: 200,
                       controller: _textController,

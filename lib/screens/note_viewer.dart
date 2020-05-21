@@ -36,6 +36,12 @@ class _NoteViewerState extends State<NoteViewer> {
         Stack(
           children: <Widget>[
             GestureDetector(
+              onVerticalDragUpdate: (details) {
+                if (details.delta.dx > gestureSensitivity*2) {
+                  // upSwipe
+                  _newNote(context);
+                }
+              },
               onHorizontalDragUpdate: (details) {
                   if (details.delta.dx > gestureSensitivity) {
                   // Right Swipe
