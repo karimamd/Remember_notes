@@ -67,7 +67,7 @@ class NoteProvider {
       where: 'id = ?',
       whereArgs: [note['id']]);
   }
-  static Future updateNoteByTitle(String title,Map<String, dynamic> note) async {
+  static Future updateNoteByData(String title, String text,Map<String, dynamic> note) async {
     await db.update(
         DATABASE_NOTES_TABLE,
         note,
@@ -81,11 +81,11 @@ class NoteProvider {
       where: 'id = ?',
       whereArgs: [id]);
   }
-  static Future deleteNoteByTitle(String title) async {
+  static Future deleteNoteByData(String title, String text) async {
     await db.delete(
         DATABASE_NOTES_TABLE,
-        where: 'title = ?',
-        whereArgs: [title]);
+        where: 'title = ? and text= ?',
+        whereArgs: [title,text]);
   }
 
 }

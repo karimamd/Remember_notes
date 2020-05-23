@@ -20,6 +20,14 @@ class _NoteEditorState extends State<NoteEditor> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Note'),
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {_updateNote(context, widget.index);},
+            child: Text("Save"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
       ),
       body: Center(
         child: Container(
@@ -28,6 +36,7 @@ class _NoteEditorState extends State<NoteEditor> {
 //            crossAxisAlignment: CrossAxisAlignment.center,
 //            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               // maybe change TextFields to TextFormFields
               TextField(
                 maxLines: 2,
@@ -73,7 +82,8 @@ class _NoteEditorState extends State<NoteEditor> {
   }
   Future _updateNote(context, index) async {
     Map note= {'title': _titleController.text , 'text': _textController.text};
-    await NoteProvider.updateNoteByTitle(dummyNotes[index]['title'],{'title': _titleController.text, 'text': _textController.text});
+    await NoteProvider.updateNoteByData(dummyNotes[index]['title'],dummyNotes[index]['text'],
+        {'title': _titleController.text, 'text': _textController.text});
     //dummyNotes.removeAt(index);
     //dummyNotes.insert(index, note);
     dummyNotes[index]=note;
@@ -83,7 +93,7 @@ class _NoteEditorState extends State<NoteEditor> {
     Navigator.pop(context);
   }
   Future _deleteNote(context, index) async {
-    await NoteProvider.deleteNoteByTitle(dummyNotes[index]['title']);
+    await NoteProvider.deleteNoteByData(dummyNotes[index]['title'],dummyNotes[index]['text']);
     dummyNotes.removeAt(index);
     Navigator.pop(context);
   }

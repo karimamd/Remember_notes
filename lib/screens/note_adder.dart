@@ -14,6 +14,14 @@ class _NoteAdderState extends State<NoteAdder> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new Note'),
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {_addNote(context,_titleController.text, _textController.text);},
+            child: Text("Save"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
       ),
       body: Center(
         child: Container(
@@ -22,6 +30,7 @@ class _NoteAdderState extends State<NoteAdder> {
 //            crossAxisAlignment: CrossAxisAlignment.center,
 //            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               // maybe change TextFields to TextFormFields
               TextField(
                 maxLines: 2,
