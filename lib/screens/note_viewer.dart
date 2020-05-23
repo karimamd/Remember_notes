@@ -16,7 +16,7 @@ class _NoteViewerState extends State<NoteViewer> {
 
   int _index= 0;
   int noteId=1;
-  int gestureSensitivity = 20;
+  int gestureSensitivity = 10;
   void _incrementIndex() async {
     setState( () {_index= (_index+1) % dummyNotes.length;} );
   }
@@ -24,7 +24,12 @@ class _NoteViewerState extends State<NoteViewer> {
     setState( () {_index= _index==0 ? dummyNotes.length-1 : (_index-1);} );
   }
 
-
+@override
+  void initState() {
+    // TODO: implement initState
+    _loadDB();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     _index= _index ==dummyNotes.length? 0:_index;
@@ -36,21 +41,13 @@ class _NoteViewerState extends State<NoteViewer> {
         Stack(
           children: <Widget>[
             GestureDetector(
-              onVerticalDragUpdate: (details) {
-                if (details.delta.dx > gestureSensitivity*2) {
-                  // upSwipe
-                  _newNote(context);
-                }
+              onHorizontalDragEnd: (DragEndDetails details){
+                  print('DragEnd details');
+                  print(details);
+                  if(details.primaryVelocity >0) _nextNote(context);
+                  else _previousNote(context);
               },
-              onHorizontalDragUpdate: (details) {
-                  if (details.delta.dx > gestureSensitivity) {
-                  // Right Swipe
-                    _nextNote(context);
-                  } else if(details.delta.dx < -gestureSensitivity){
-                  //Left Swipe
-                    _previousNote(context);
-                  }
-              },
+
               onDoubleTap: (){ _editNote(context, _index); },
               child: Center(
                 child: Container(
@@ -91,12 +88,11 @@ class _NoteViewerState extends State<NoteViewer> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     NoteButton('Previous', Colors.amber, (){if(dummyNotes.length>0)_previousNote(context);}),
-                    NoteButton(dummyNotes.length > 0?'Edit':'Load', Colors.grey, (){
+                    NoteButton('Edit', Colors.grey, (){
                       if(dummyNotes.length>0)
                         _editNote(context, _index);
-                      else
-                        _loadDB();
-                    }),
+                      }
+                    ),
                     NoteButton('New', Colors.green, (){_newNote(context);}),
                     NoteButton('Next', Colors.amber, (){if(dummyNotes.length>0)_nextNote(context);}),
                   ],
