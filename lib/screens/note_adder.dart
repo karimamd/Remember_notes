@@ -1,3 +1,4 @@
+import 'package:designs/providers/note_provider.dart';
 import 'package:flutter/material.dart';
 import 'note_viewer.dart';
 class NoteAdder extends StatefulWidget {
@@ -13,16 +14,27 @@ class _NoteAdderState extends State<NoteAdder> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new Note'),
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {_addNote(context,_titleController.text, _textController.text);},
+            child: Text("Save"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
       ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width*0.85,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+//            crossAxisAlignment: CrossAxisAlignment.center,
+//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               // maybe change TextFields to TextFormFields
               TextField(
+                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
+                _titleController.selection = val;},
                 maxLines: 2,
                 controller: _titleController,
                 decoration: InputDecoration(
@@ -32,10 +44,12 @@ class _NoteAdderState extends State<NoteAdder> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               SizedBox(
-                height: MediaQuery.of(context).size.height*0.55,
+                height: MediaQuery.of(context).size.height*0.45,
                 child: TextField(
                   maxLines: 200,
                   controller: _textController,
+                  onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
+                  _textController.selection = val;},
                   decoration: InputDecoration(
                       hintText: 'Note text',
                       border: OutlineInputBorder()
@@ -62,8 +76,10 @@ class _NoteAdderState extends State<NoteAdder> {
     );
   }
   Future _addNote(context, noteTitle, noteText) async {
+    //int maxId= await NoteProvider.db.rawQuery('SELECT * FROM "table"');
     Map note= {'title': noteTitle , 'text': noteText};
-    dummyNotes.insert(0,note);
+    await NoteProvider.insertNote({'title': noteTitle, 'text': noteText});
+    dummyNotes.insert(dummyNotes.length,note);
     Navigator.pop(context);
   }
   Future _discardNote(context) async {

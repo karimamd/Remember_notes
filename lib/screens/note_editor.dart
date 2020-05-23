@@ -1,3 +1,4 @@
+import 'package:designs/providers/note_provider.dart';
 import 'package:flutter/material.dart';
 import 'note_viewer.dart';
 class NoteEditor extends StatefulWidget {
@@ -16,21 +17,34 @@ class _NoteEditorState extends State<NoteEditor> {
   Widget build(BuildContext context) {
     _titleController.text= dummyNotes[widget.index]['title'];
     _textController.text= dummyNotes[widget.index]['text'];
+    //_titleController.selection = TextSelection.fromPosition(TextPosition(offset: _titleController.text.length));
+    //_textController.selection = TextSelection.fromPosition(TextPosition(offset: _textController.text.length));
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Note'),
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {_updateNote(context, widget.index);},
+            child: Text("Save"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
       ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width*0.85,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+//            crossAxisAlignment: CrossAxisAlignment.center,
+//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               // maybe change TextFields to TextFormFields
               TextField(
                 maxLines: 2,
                 controller: _titleController,
+                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
+                _titleController.selection = val;},
                 decoration: InputDecoration(
                   hintText: 'Title',
                   border: OutlineInputBorder()
@@ -42,10 +56,12 @@ class _NoteEditorState extends State<NoteEditor> {
                   scrollDirection: Axis.vertical,
                   reverse: true,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height*0.55,
+                    height: MediaQuery.of(context).size.height*0.45,
                     child: TextField(
                       maxLines: 200,
                       controller: _textController,
+                      onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
+                      _textController.selection = val;},
                       decoration: InputDecoration(
                         hintText: 'Note text',
                         border: OutlineInputBorder(),
@@ -72,14 +88,18 @@ class _NoteEditorState extends State<NoteEditor> {
   }
   Future _updateNote(context, index) async {
     Map note= {'title': _titleController.text , 'text': _textController.text};
-    dummyNotes.removeAt(index);
-    dummyNotes.insert(index, note);
+    await NoteProvider.updateNoteByData(dummyNotes[index]['title'],dummyNotes[index]['text'],
+        {'title': _titleController.text, 'text': _textController.text});
+    //dummyNotes.removeAt(index);
+    //dummyNotes.insert(index, note);
+    dummyNotes[index]=note;
     Navigator.pop(context);
   }
   Future _discardNote(context) async {
     Navigator.pop(context);
   }
   Future _deleteNote(context, index) async {
+    await NoteProvider.deleteNoteByData(dummyNotes[index]['title'],dummyNotes[index]['text']);
     dummyNotes.removeAt(index);
     Navigator.pop(context);
   }
