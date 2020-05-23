@@ -33,6 +33,8 @@ class _NoteAdderState extends State<NoteAdder> {
               SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               // maybe change TextFields to TextFormFields
               TextField(
+                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
+                _titleController.selection = val;},
                 maxLines: 2,
                 controller: _titleController,
                 decoration: InputDecoration(
@@ -46,6 +48,8 @@ class _NoteAdderState extends State<NoteAdder> {
                 child: TextField(
                   maxLines: 200,
                   controller: _textController,
+                  onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
+                  _textController.selection = val;},
                   decoration: InputDecoration(
                       hintText: 'Note text',
                       border: OutlineInputBorder()
