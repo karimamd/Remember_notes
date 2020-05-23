@@ -17,8 +17,8 @@ class _NoteEditorState extends State<NoteEditor> {
   Widget build(BuildContext context) {
     _titleController.text= dummyNotes[widget.index]['title'];
     _textController.text= dummyNotes[widget.index]['text'];
-    //_titleController.selection = TextSelection.fromPosition(TextPosition(offset: _titleController.text.length));
-    //_textController.selection = TextSelection.fromPosition(TextPosition(offset: _textController.text.length));
+    _titleController.selection = TextSelection.fromPosition(TextPosition(offset: _titleController.text.length));
+    _textController.selection = TextSelection.fromPosition(TextPosition(offset: _textController.text.length));
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Note'),
