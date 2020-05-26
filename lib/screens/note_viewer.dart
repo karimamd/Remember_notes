@@ -40,6 +40,8 @@ class _NoteViewerState extends State<NoteViewer> {
   @override
   Widget build(BuildContext context) {
     _index= _index ==dummyNotes.length? 0:_index;
+    int notesLength= dummyNotes.length;
+    String indexIndicator='($_index / $notesLength) \n';
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
@@ -64,8 +66,9 @@ class _NoteViewerState extends State<NoteViewer> {
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            dummyNotes.length > 0 ? dummyNotes[_index]['title'] : 'Create a New note',
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                            dummyNotes.length > 0 ? indexIndicator
+                                + dummyNotes[_index]['title'] : 'Create a New note',
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -74,7 +77,7 @@ class _NoteViewerState extends State<NoteViewer> {
                         child: Text(
                          dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 23,
                           ),
                         ),
                       ),
