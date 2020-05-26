@@ -41,7 +41,8 @@ class _NoteViewerState extends State<NoteViewer> {
   Widget build(BuildContext context) {
     _index= _index ==dummyNotes.length? 0:_index;
     int notesLength= dummyNotes.length;
-    String indexIndicator='($_index / $notesLength) \n';
+    int realIndex=_index+1;
+    String indexIndicator='       ($realIndex / $notesLength) \n';
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
