@@ -21,19 +21,13 @@ class _NoteViewerState extends State<NoteViewer> {
   void _incrementIndex() {
     setState( () {
       _index= (_index+1) % dummyNotes.length;
-      print("index now");
-      print(_index);
       addIntToSF(_index);
     } );
   }
   void _decrementIndex() {
     setState( () {
       _index= _index==0 ? dummyNotes.length-1 : (_index-1);
-      print("index now");
-      print(_index);
       addIntToSF(_index);
-      print('recorded value');
-      print(getIntValuesSF() ?? 0);
     } );
   }
 
@@ -126,9 +120,7 @@ class _NoteViewerState extends State<NoteViewer> {
   void _sharedPrefsInit() async{
     Future<SharedPreferences> _prefs =  SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
-    print('got instance');
     bool checkValue = prefs.containsKey('index');
-    print('$checkValue');
     if(checkValue){
       _index=  await getIntValuesSF() ?? 0;
     }
@@ -136,7 +128,6 @@ class _NoteViewerState extends State<NoteViewer> {
       await addIntToSF(0);
     }
     checkValue = prefs.containsKey('index');
-    print('$checkValue');
     _index=  await getIntValuesSF() ?? 0;
   }
   void _loadDB() async{
