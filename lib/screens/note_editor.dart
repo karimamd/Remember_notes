@@ -43,8 +43,8 @@ class _NoteEditorState extends State<NoteEditor> {
               TextField(
                 maxLines: 2,
                 controller: _titleController,
-                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
-                _titleController.selection = val;},
+//                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
+//                _titleController.selection = val;},
                 decoration: InputDecoration(
                   hintText: 'Title',
                   border: OutlineInputBorder()
@@ -60,8 +60,8 @@ class _NoteEditorState extends State<NoteEditor> {
                     child: TextField(
                       maxLines: 200,
                       controller: _textController,
-                      onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
-                      _textController.selection = val;},
+//                      onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
+//                      _textController.selection = val;},
                       decoration: InputDecoration(
                         hintText: 'Note text',
                         border: OutlineInputBorder(),
