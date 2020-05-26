@@ -1,4 +1,5 @@
 import 'package:designs/providers/note_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'note_adder.dart';
 import 'note_editor.dart';
@@ -17,22 +18,31 @@ class _NoteViewerState extends State<NoteViewer> {
   int _index= 0;
   int noteId=1;
   int gestureSensitivity = 10;
-  void _incrementIndex() async {
-    setState( () {_index= (_index+1) % dummyNotes.length;} );
+  void _incrementIndex() {
+    setState( () {
+      _index= (_index+1) % dummyNotes.length;
+      addIntToSF(_index);
+    } );
   }
   void _decrementIndex() {
-    setState( () {_index= _index==0 ? dummyNotes.length-1 : (_index-1);} );
+    setState( () {
+      _index= _index==0 ? dummyNotes.length-1 : (_index-1);
+      addIntToSF(_index);
+    } );
   }
 
 @override
   void initState() {
-    // TODO: implement initState
+    _sharedPrefsInit();
     _loadDB();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     _index= _index ==dummyNotes.length? 0:_index;
+    int notesLength= dummyNotes.length;
+    int realIndex=_index+1;
+    String indexIndicator='       ($realIndex / $notesLength) \n';
     return Scaffold(
         appBar: AppBar(
           title: Text('Note Viewer'),
@@ -42,9 +52,7 @@ class _NoteViewerState extends State<NoteViewer> {
           children: <Widget>[
             GestureDetector(
               onHorizontalDragEnd: (DragEndDetails details){
-                  print('DragEnd details');
-                  print(details);
-                  if(details.primaryVelocity >0) _nextNote(context);
+                  if(details.primaryVelocity < 0) _nextNote(context);
                   else _previousNote(context);
               },
 
@@ -59,8 +67,9 @@ class _NoteViewerState extends State<NoteViewer> {
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            dummyNotes.length > 0 ? dummyNotes[_index]['title'] : 'Create a New note',
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                            dummyNotes.length > 0 ? indexIndicator
+                                + dummyNotes[_index]['title'] : 'Create a New note',
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -69,7 +78,7 @@ class _NoteViewerState extends State<NoteViewer> {
                         child: Text(
                          dummyNotes.length > 0 ? dummyNotes[_index]['text'] : 'No notes to show !',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 23,
                           ),
                         ),
                       ),
@@ -112,6 +121,19 @@ class _NoteViewerState extends State<NoteViewer> {
   Future _nextNote(context) async {
     _incrementIndex();
   }
+  void _sharedPrefsInit() async{
+    Future<SharedPreferences> _prefs =  SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    bool checkValue = prefs.containsKey('index');
+    if(checkValue){
+      _index=  await getIntValuesSF() ?? 0;
+    }
+    else{
+      await addIntToSF(0);
+    }
+    checkValue = prefs.containsKey('index');
+    _index=  await getIntValuesSF() ?? 0;
+  }
   void _loadDB() async{
     dummyNotes.addAll( await NoteProvider.getNoteList());
     setState((){});
@@ -125,9 +147,18 @@ class _NoteViewerState extends State<NoteViewer> {
     if(dummyNotes.length==0)
       _loadDB();
     Navigator.push(context, MaterialPageRoute(builder: (context) => NoteAdder()));
-
-
   }
+  addIntToSF(int index_n) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('index', index_n);
+  }
+  getIntValuesSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return int
+    int intValue = prefs.getInt('index');
+    return intValue;
+  }
+
 }
 
 class NoteButton extends StatelessWidget {
