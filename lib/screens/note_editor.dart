@@ -11,16 +11,23 @@ class NoteEditor extends StatefulWidget {
 }
 
 class _NoteEditorState extends State<NoteEditor> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _textController = TextEditingController();
+  var _titleController = TextEditingController();
+  var _textController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     _titleController.text= dummyNotes[widget.index]['title'];
     _textController.text= dummyNotes[widget.index]['text'];
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+//    _titleController.text= dummyNotes[widget.index]['title'];
+//    _textController.text= dummyNotes[widget.index]['text'];
     _titleController.selection = TextSelection.fromPosition(TextPosition(offset: _titleController.text.length));
     _textController.selection = TextSelection.fromPosition(TextPosition(offset: _textController.text.length));
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Edit Note'),
         actions: <Widget>[
           FlatButton(
@@ -43,8 +50,6 @@ class _NoteEditorState extends State<NoteEditor> {
               TextField(
                 maxLines: 2,
                 controller: _titleController,
-//                onChanged: (text){final val = TextSelection.collapsed(offset: _titleController.text.length);
-//                _titleController.selection = val;},
                 decoration: InputDecoration(
                   hintText: 'Title',
                   border: OutlineInputBorder()
@@ -60,8 +65,6 @@ class _NoteEditorState extends State<NoteEditor> {
                     child: TextField(
                       maxLines: 200,
                       controller: _textController,
-//                      onChanged: (text){final val = TextSelection.collapsed(offset: _textController.text.length);
-//                      _textController.selection = val;},
                       decoration: InputDecoration(
                         hintText: 'Note text',
                         border: OutlineInputBorder(),

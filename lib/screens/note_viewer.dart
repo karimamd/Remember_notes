@@ -42,10 +42,23 @@ class _NoteViewerState extends State<NoteViewer> {
     _index= _index ==dummyNotes.length? 0:_index;
     int notesLength= dummyNotes.length;
     int realIndex=_index+1;
-    String indexIndicator='       ($realIndex / $notesLength) \n';
+    String indexIndicator='($realIndex / $notesLength) \n';
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('Note Viewer'),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: () {},
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(indexIndicator,
+                style: TextStyle(fontSize: 20),),
+              ),
+              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+            ),
+          ],
         ),
         body:
         Stack(
@@ -67,8 +80,7 @@ class _NoteViewerState extends State<NoteViewer> {
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            dummyNotes.length > 0 ? indexIndicator
-                                + dummyNotes[_index]['title'] : 'Create a New note',
+                            dummyNotes.length > 0 ?  dummyNotes[_index]['title'] : 'Create a New note',
                             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
